@@ -42,4 +42,17 @@ app.post("/sms", async (req, res) => {
     conversations[fromNumber].push({ role: "assistant", content: reply });
 
     await twilioClient.messages.create({
-      body​​​​​​​​​​​​​​​​
+      body: reply,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: fromNumber,
+    });
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Agent running on port ${PORT}`));
